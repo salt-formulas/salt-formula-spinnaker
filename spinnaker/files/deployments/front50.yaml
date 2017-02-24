@@ -1,0 +1,47 @@
+{%- from "spinnaker/map.jinja" import front50 with context -%}
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: spin-front50-v000
+  namespace: spinnaker
+  labels:
+    app: spin
+    stack: front50
+    version: v000
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      replication-controller: spin-front50-v000
+  template:
+    metadata:
+      labels:
+        replication-controller: spin-front50-v000
+        load-balancer-spin-front50: "true"
+    spec:
+      containers:
+        - image: {{ front50.image }}:{{ front50.tag }}
+          imagePullPolicy: Always
+          name: front50
+          ports:
+            - containerPort: 8080
+              name: front50
+          volumeMounts:
+            - mountPath: /opt/spinnaker/config
+              name: spinnaker-config
+            - mountPath: /root/.kube
+              name: creds-config
+          readinessProbe:
+            httpGet:
+              path: /env
+              port: 8080
+            initialDelaySeconds: 20
+            timeoutSeconds: 1
+      volumes:
+        - name: spinnaker-config
+          secret:
+            secretName: spinnaker-config
+        - name: creds-config
+          secret:
+            secretName: creds-config

@@ -1,0 +1,46 @@
+{%- from "spinnaker/map.jinja" import master, clouddriver with context -%}
+
+server:
+  port: ${services.clouddriver.port:7002}
+  address: 0.0.0.0
+
+redis:
+  connection: ${services.redis.connection:redis://localhost:6379}
+
+default:
+  account:
+    env: {{ master.providers.kubernetes.primaryCredentials.name }}
+
+kubernetes:
+  enabled: {{ master.providers.kubernetes.enabled }}
+  accounts:
+  {%- for acc in clouddriver.kubernetes.accounts %}
+    - name: {{ acc.name }}
+      user: {{ acc.user }}
+      cluster: {{ acc.cluster }}
+      namespaces:
+        {%- for namespace in acc.namespaces %}
+        - {{ namespace }}
+        {%- endfor %}
+      kubeconfigFile: {{ acc.kubeconfigFile }}
+      dockerRegistries: # WARNING! only include configured accounts here
+        {%- for dr in acc.dockerRegistries %}
+        - accountName: {{ dr.accountName }}
+        {%- endfor %}
+  {%- endfor %}
+
+dockerRegistry:
+  enabled: {{ clouddriver.dockerRegistry.enabled }}
+  accounts:
+    {%- for acc in clouddriver.dockerRegistry.accounts %}
+    - name: {{ acc.name }}
+      address: {{ acc.address if acc.address != None else 'https://index.docker.io' }}
+      repositories:
+        {%- for repo in acc.repositories %}
+        - {{ repo }}
+        {%- endfor %}
+    {%- endfor %}
+
+credentials:
+  primaryAccountTypes: {{ clouddriver.credentials.primaryAccountTypes }}
+  challengeDestructiveActionsEnvironments: {{ clouddriver.credentials.challengeDesctructiveActionsEnvironments }}
