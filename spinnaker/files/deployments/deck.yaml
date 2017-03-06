@@ -24,11 +24,21 @@ spec:
         - image: {{ deck.image }}:{{ deck.tag }}
           imagePullPolicy: Always
           name: deck
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - "sh"
+                  - "-c"
+                  - >
+                    sleep 1 && sed -i 's@http://localhost:8084@/gate@' /opt/deck/html/settings.js
           env:
             - name: DECK_HOST
               value: "0.0.0.0"
             - name: DECK_PORT
               value: "9000"
+            - name: API_HOST
+              value: "http://spin-gate.spinnaker:8084"
           ports:
             - containerPort: 9000
               name: deck

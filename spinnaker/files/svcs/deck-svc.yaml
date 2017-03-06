@@ -7,7 +7,10 @@ metadata:
     app: spin
     stack: deck
 spec:
+  type: NodePort
   ports:
-    - port: 9000
+    - name: clouddriver
+      port: 9000
+      targetPort: 9000
   selector:
     load-balancer-spin-deck: "true"
