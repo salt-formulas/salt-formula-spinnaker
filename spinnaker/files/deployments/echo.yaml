@@ -28,7 +28,7 @@ spec:
             - containerPort: 8089
               name: echo
           volumeMounts:
-            - mountPath: /opt/spinnaker/config
+            - mountPath: /opt/echo/config
               name: spinnaker-config
           readinessProbe:
             httpGet:

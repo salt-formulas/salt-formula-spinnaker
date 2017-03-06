@@ -8,13 +8,13 @@ parameters:
         spinnaker:
           environment: oss
       services:
+        redis:
+          timeout: 30000
         front50:
           cassandra:
             enabled: false
           redis:
             enabled: true
-        redis:
-          timeout: 30000
       providers:
         kubernetes:
           enabled: true
@@ -29,8 +29,22 @@ parameters:
     clouddriver:
       image: quay.io/spinnaker/clouddriver
       tag: v1.532.0
+      aws:
+        enabled: false
+      azure:
+        enabled: false
+      cf:
+        enabled: false
+      google:
+        enabled: false
+      credentials:
+        primaryAccountTypes: default
+        challengeDesctructiveActionsEnvironments: default
+      default:
+        account:
+          env: oss-spinnaker
       kubernetes:
-        enabled: 'true'
+        enabled: true
         accounts:
         - name: oss-kubernetes
           user: kubelet
@@ -50,8 +64,8 @@ parameters:
           repositories:
             - library/nginx
       credentials:
-        primaryAccountTypes: oss-dockerhub
-        challengeDesctructiveActionsEnvironments: oss-dockerhub
+        primaryAccountTypes: default
+        challengeDesctructiveActionsEnvironments: default
     echo:
       image: quay.io/spinnaker/echo
       tag: v1.132.0

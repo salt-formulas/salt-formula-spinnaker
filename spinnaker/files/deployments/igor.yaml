@@ -28,7 +28,7 @@ spec:
             - containerPort: 8088
               name: igor
           volumeMounts:
-            - mountPath: /opt/spinnaker/config
+            - mountPath: /opt/igor/config
               name: spinnaker-config
           readinessProbe:
             httpGet:

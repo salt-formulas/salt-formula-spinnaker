@@ -28,7 +28,7 @@ spec:
             - containerPort: 7002
               name: clouddriver
           volumeMounts:
-            - mountPath: /opt/spinnaker/config
+            - mountPath: /opt/clouddriver/config
               name: spinnaker-config
             - mountPath: /root/.kube
               name: creds-config

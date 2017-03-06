@@ -28,7 +28,7 @@ spec:
             - containerPort: 8080
               name: front50
           volumeMounts:
-            - mountPath: /opt/spinnaker/config
+            - mountPath: /opt/front50/config
               name: spinnaker-config
             - mountPath: /root/.kube
               name: creds-config

@@ -43,7 +43,7 @@ spec:
             - containerPort: 9000
               name: deck
           volumeMounts:
-            - mountPath: /opt/spinnaker/config
+            - mountPath: /opt/deck/config
               name: spinnaker-config
       volumes:
         - name: spinnaker-config

@@ -28,7 +28,7 @@ spec:
             - containerPort: 8083
               name: orca
           volumeMounts:
-            - mountPath: /opt/spinnaker/config
+            - mountPath: /opt/orca/config
               name: spinnaker-config
           readinessProbe:
             httpGet:
